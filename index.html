@@ -3,23 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project Velo | Building our own economy</title>
+  <title>Project Velo | Interconnected Ecosystem</title>
 
-  <!-- Favicon & Touch Icons -->
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  
-  <!-- Theme Color -->
   <meta name="theme-color" content="#f8fafc">
 
-  <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
     :root {
-      /* Core Colors */
       --bg-color: #f8fafc;
       --surface-subtle: #f1f5f9;
       --surface-white: #ffffff;
@@ -29,571 +24,135 @@
       --primary-hover: #4338ca;
       --primary-light: #eef2ff;
       --border-light: rgba(15, 23, 42, 0.06);
-      
       --font-family: 'Plus Jakarta Sans', sans-serif;
-      
-      /* Premium Animation Curves */
       --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
       --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-      --ease-snappy: cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    /* Resets & Base Styles */
-    * { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
-      font-family: var(--font-family); 
-    }
-    
-    html {
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); }
+    body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      min-height: 100vh;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      display: flex;
-      flex-direction: column;
-    }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
-    /* Layout & Utilities */
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* Top Navigation & App Menu */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 24px;
-      z-index: 100;
-      display: flex;
-      justify-content: flex-end;
-      pointer-events: none; /* Let clicks pass through empty header space */
-    }
-
-    .nav-wrapper {
-      position: relative;
-      pointer-events: auto;
-    }
+    header { position: fixed; top: 0; left: 0; width: 100%; padding: 24px; z-index: 100; display: flex; justify-content: flex-end; pointer-events: none; }
+    .nav-wrapper { position: relative; pointer-events: auto; }
 
     .menu-btn {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--surface-white);
-      color: var(--text-main);
-      border: 1px solid var(--border-light);
-      padding: 12px 20px;
-      border-radius: 100px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 8px 20px -6px rgba(15, 23, 42, 0.08);
-      transition: all 0.4s var(--ease-spring);
-      position: relative;
-      z-index: 102;
+      display: flex; align-items: center; gap: 10px; background: var(--surface-white); color: var(--text-main);
+      border: 1px solid var(--border-light); padding: 12px 20px; border-radius: 100px; font-weight: 600;
+      cursor: pointer; box-shadow: 0 8px 20px -6px rgba(15, 23, 42, 0.08); transition: all 0.4s var(--ease-spring);
     }
-
-    .menu-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 24px -8px rgba(15, 23, 42, 0.12);
-      border-color: rgba(15, 23, 42, 0.1);
-    }
-
-    .menu-btn:active {
-      transform: translateY(1px) scale(0.96);
-    }
-
-    .menu-btn.active {
-      background: var(--surface-subtle);
-      box-shadow: none;
-      transform: translateY(0);
-    }
-
-    .menu-icon {
-      width: 20px;
-      height: 20px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4px;
-      transition: transform 0.4s var(--ease-spring);
-    }
-
-    .menu-icon span {
-      background-color: currentColor;
-      border-radius: 2px;
-      transition: all 0.4s var(--ease-spring);
-    }
-
-    /* Morph icon to an subtle pattern when active */
-    .menu-btn.active .menu-icon {
-      transform: rotate(90deg) scale(0.8);
-      opacity: 0.5;
-    }
+    .menu-btn:hover { transform: translateY(-2px); }
 
     .app-menu-panel {
-      position: absolute;
-      top: calc(100% + 12px);
-      right: 0;
-      width: 320px;
-      background: var(--surface-white);
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.15), 0 0 0 1px var(--border-light);
-      z-index: 101;
-      
-      /* Animation Setup */
-      opacity: 0;
-      visibility: hidden;
-      transform-origin: top right;
-      transform: scale(0.95) translateY(-10px);
-      transition: all 0.4s var(--ease-spring);
-      will-change: transform, opacity;
+      position: absolute; top: calc(100% + 12px); right: 0; width: 320px; background: var(--surface-white);
+      border-radius: 24px; padding: 20px; box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.15);
+      opacity: 0; visibility: hidden; transform: scale(0.95) translateY(-10px); transition: all 0.4s var(--ease-spring);
     }
-
-    .app-menu-panel.active {
-      opacity: 1;
-      visibility: visible;
-      transform: scale(1) translateY(0);
-    }
-
-    .app-menu-title {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 700;
-      color: var(--text-muted);
-      margin-bottom: 16px;
-      display: block;
-    }
+    .app-menu-panel.active { opacity: 1; visibility: visible; transform: scale(1) translateY(0); }
 
     .app-item {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 16px;
-      background: var(--surface-subtle);
-      border-radius: 16px;
-      text-decoration: none;
-      color: var(--text-main);
+      display: flex; align-items: center; gap: 16px; padding: 14px; background: var(--surface-subtle);
+      border-radius: 16px; text-decoration: none; color: var(--text-main); margin-bottom: 8px;
       transition: all 0.3s var(--ease-smooth);
-      position: relative;
-      overflow: hidden;
     }
+    .app-item:hover { background: var(--primary-light); transform: translateX(4px); }
+    .app-item-logo { width: 36px; height: 36px; object-fit: contain; border-radius: 10px; }
 
-    .app-item:hover {
-      background: var(--primary-light);
-      transform: translateX(4px);
-    }
+    .hero { min-height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding-top: 80px; }
+    .hero-title { font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 700; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 20px; }
 
-    .app-item:focus-visible {
-      outline: 2px solid var(--primary);
-      outline-offset: 2px;
-    }
-
-    .app-item-logo {
-      width: 40px;
-      height: 40px;
-      object-fit: contain;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-
-    .app-item-text h3 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-    
-    .app-item-text p {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .menu-coming-soon {
-      margin-top: 20px;
-      padding: 16px;
-      text-align: center;
-      border: 1px dashed var(--border-light);
-      border-radius: 16px;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    /* Hero Section */
-    .hero {
-      min-height: 85vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding-top: 80px;
-    }
-
-    .hero-logo {
-      width: 96px;
-      height: 96px;
-      object-fit: contain;
-      margin-bottom: 32px;
-      border-radius: 24px;
-      box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.1);
-      
-      /* Subtle entrance & floating */
-      animation: slideUpFade 0.8s var(--ease-smooth) backwards, 
-                 floatElement 8s ease-in-out infinite 0.8s;
-    }
-
-    .hero-title {
-      font-size: clamp(3rem, 6vw, 4.5rem);
-      font-weight: 700;
-      letter-spacing: -1.5px;
-      line-height: 1.1;
-      margin-bottom: 20px;
-      animation: slideUpFade 0.8s var(--ease-smooth) 0.15s backwards;
-    }
-
-    .hero-tagline {
-      font-size: clamp(1.1rem, 2vw, 1.5rem);
-      color: var(--text-muted);
-      font-weight: 400;
-      max-width: 600px;
-      line-height: 1.5;
-      animation: slideUpFade 0.8s var(--ease-smooth) 0.3s backwards;
-    }
-
-    /* Velocoin Section */
-    .velocoin-section {
-      padding: 100px 0;
-      position: relative;
-    }
-
-    .velo-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
-
-    .velo-content h2 {
-      font-size: 2.25rem;
-      font-weight: 700;
-      letter-spacing: -1px;
-      margin-bottom: 24px;
-      color: var(--text-main);
-    }
-
-    .velo-content p {
-      font-size: 1.15rem;
-      line-height: 1.7;
-      color: var(--text-muted);
-      margin-bottom: 40px;
-    }
+    .feature-section { padding: 80px 0; border-top: 1px solid var(--border-light); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
 
     .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 18px 36px;
-      background: var(--primary);
-      color: white;
-      text-decoration: none;
-      font-size: 1.05rem;
-      font-weight: 600;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.25);
-      transition: all 0.4s var(--ease-spring);
-      transform: translateZ(0);
+      display: inline-flex; padding: 16px 32px; background: var(--primary); color: white;
+      text-decoration: none; font-weight: 600; border-radius: 16px; transition: all 0.3s var(--ease-spring);
     }
+    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
 
-    .btn-primary:hover {
-      background: var(--primary-hover);
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 14px 28px -5px rgba(79, 70, 229, 0.35);
-    }
+    .shot-box { border-radius: 24px; overflow: hidden; border: 1px solid var(--border-light); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1); }
+    .shot-box img { width: 100%; height: auto; display: block; }
 
-    .btn-primary:active {
-      transform: translateY(1px) scale(0.98);
-      box-shadow: 0 4px 12px -2px rgba(79, 70, 229, 0.2);
-      transition: all 0.1s var(--ease-snappy);
-    }
-
-    .btn-primary:focus-visible {
-      outline: 4px solid var(--primary-light);
-      outline-offset: 2px;
-    }
-
-    .velo-visual {
-      position: relative;
-      perspective: 1000px;
-    }
-
-    .screenshot-wrapper {
-      position: relative;
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.15);
-      border: 1px solid var(--border-light);
-      background: var(--surface-white);
-      transform: rotateY(-4deg) rotateX(2deg) translateZ(0);
-      transition: transform 0.6s var(--ease-spring), box-shadow 0.6s var(--ease-smooth);
-    }
-
-    .screenshot-wrapper:hover {
-      transform: rotateY(0deg) rotateX(0deg) translateY(-8px);
-      box-shadow: 0 35px 60px -15px rgba(15, 23, 42, 0.2);
-    }
-
-    .screenshot-wrapper img {
-      width: 100%;
-      height: auto;
-      display: block;
-      /* Ensure crisp rendering on scaling */
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-    }
-
-    /* Subtle ambient glow behind the screenshot */
-    .velo-visual::before {
-      content: '';
-      position: absolute;
-      inset: -10%;
-      background: radial-gradient(circle at center, rgba(79, 70, 229, 0.08) 0%, transparent 60%);
-      z-index: -1;
-      filter: blur(40px);
-      transition: opacity 0.4s ease;
-    }
-
-    /* More Apps Note */
-    .more-apps-section {
-      padding: 60px 0 120px;
-      text-align: center;
-    }
-
-    .more-apps-text {
-      display: inline-block;
-      font-size: 1.25rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      padding: 16px 32px;
-      background: var(--surface-subtle);
-      border-radius: 100px;
-      letter-spacing: -0.2px;
-    }
-
-    /* Scroll Reveal Classes */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s var(--ease-smooth), transform 0.8s var(--ease-spring);
-      will-change: opacity, transform;
-    }
-
-    .reveal.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .delay-1 { transition-delay: 0.1s; }
-    .delay-2 { transition-delay: 0.2s; }
-
-    /* Keyframes */
-    @keyframes slideUpFade {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes floatElement {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-12px); }
-    }
-
-    /* Responsive Design */
-    @media (max-width: 900px) {
-      .velo-grid {
-        grid-template-columns: 1fr;
-        gap: 60px;
-        text-align: center;
-      }
-      
-      .velo-content h2 { font-size: 2rem; }
-      
-      .velo-visual { max-width: 600px; margin: 0 auto; }
-      
-      .screenshot-wrapper {
-        transform: none; /* Flatten perspective on tablet/mobile for readability */
-      }
-      .screenshot-wrapper:hover {
-        transform: translateY(-4px);
-      }
-    }
-
-    @media (max-width: 600px) {
-      header { padding: 16px; }
-      .app-menu-panel { width: calc(100vw - 32px); right: 0; top: calc(100% + 8px); }
-      .hero { padding-top: 60px; min-height: 75vh; }
-      .hero-logo { width: 80px; height: 80px; }
-      .velocoin-section { padding: 60px 0; }
-    }
-
-    /* Accessibility: Reduced Motion */
-    @media (prefers-reduced-motion: reduce) {
-      *, ::before, ::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-      }
-      .hero-logo { animation: none; }
-      .screenshot-wrapper, .screenshot-wrapper:hover { transform: none !important; }
-      .menu-icon, .app-menu-panel { transform: none !important; }
-      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
-    }
+    @media (max-width: 850px) { .grid-2 { grid-template-columns: 1fr; text-align: center; } }
   </style>
 </head>
 <body>
 
-  <!-- Header & App Menu -->
   <header>
     <div class="nav-wrapper">
-      <button id="menu-toggle" class="menu-btn" aria-expanded="false" aria-label="Toggle Velo Apps Menu" aria-controls="app-menu">
-        <div class="menu-icon" aria-hidden="true">
-          <span></span><span></span><span></span><span></span>
-        </div>
-        <span>Apps</span>
-      </button>
-
-      <div id="app-menu" class="app-menu-panel" role="menu" aria-label="Project Velo Apps">
-        <span class="app-menu-title">Ecosystem</span>
+      <button id="menu-toggle" class="menu-btn">Apps Menu</button>
+      <div id="app-menu" class="app-menu-panel">
+        <span style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:var(--text-muted); display:block; margin-bottom:12px;">Ecosystem</span>
         
-        <a href="https://bentleyhilman.github.io/velocoin" class="app-item" role="menuitem">
-          <img src="logo.png" alt="Velocoin Icon" class="app-item-logo" onerror="this.style.display='none'">
-          <div class="app-item-text">
-            <h3>Velocoin</h3>
-            <p>Banking & Transfers</p>
-          </div>
+        <a href="https://bentleyhilman.github.io/velocoin" class="app-item">
+          <img src="logo.png" class="app-item-logo" onerror="this.src='favicon.png'">
+          <div><h4 style="font-weight:700;">Velocoin</h4><p style="font-size:0.8rem; color:var(--text-muted);">Banking & Transfers</p></div>
         </a>
 
-        <div class="menu-coming-soon" role="none">
-          More apps coming soon!
-        </div>
+        <a href="https://bentleyhilman.github.io/velomarketplace" class="app-item">
+          <img src="marketplacelogo.png" class="app-item-logo" onerror="this.src='favicon.png'">
+          <div><h4 style="font-weight:700;">Marketplace</h4><p style="font-size:0.8rem; color:var(--text-muted);">Commerce & Discovery</p></div>
+        </a>
+
+        <a href="https://bentleyhilman.github.io/velobusiness" class="app-item">
+          <img src="businesslogo.png" class="app-item-logo" onerror="this.src='favicon.png'">
+          <div><h4 style="font-weight:700;">Business Dashboard</h4><p style="font-size:0.8rem; color:var(--text-muted);">Merchant Management</p></div>
+        </a>
       </div>
     </div>
   </header>
 
   <main>
-    <!-- Hero Section -->
     <section class="hero container">
-      <img src="logo.png" alt="Project Velo Logo" class="hero-logo" onerror="this.style.display='none'">
+      <img src="logo.png" style="width:96px; height:96px; margin-bottom:24px;" onerror="this.src='favicon.png'">
       <h1 class="hero-title">Project Velo</h1>
-      <p class="hero-tagline">Building our own economy, one app at a time.</p>
+      <p style="font-size:1.25rem; color:var(--text-muted); max-width:600px;">A complete financial ecosystem: Banking, Marketplace, and Business Commerce working in harmony.</p>
     </section>
 
-    <!-- Velocoin Showcase Section -->
-    <section class="velocoin-section container">
-      <div class="velo-grid">
-        <div class="velo-content reveal">
-          <h2>Introducing Velocoin: The app that started it all.</h2>
-          <p>Velocoin is the main currency and the foundation of the Project Velo economy. Transfer money and managing your account can all be done from this clean banking app.</p>
-          <a href="https://bentleyhilman.github.io/velocoin" class="btn-primary">Open Velocoin</a>
+    <!-- VELOCOIN SECTION -->
+    <section class="feature-section container">
+      <div class="grid-2">
+        <div>
+          <h2 style="font-size:2.25rem; margin-bottom:16px;">Velocoin Banking</h2>
+          <p style="color:var(--text-muted); font-size:1.1rem; margin-bottom:28px;">The central balance and settlement app powering instant peer-to-peer transfers and marketplace transactions.</p>
+          <a href="https://bentleyhilman.github.io/velocoin" class="btn-primary">Launch Velocoin</a>
         </div>
-        
-        <div class="velo-visual reveal delay-1">
-          <div class="screenshot-wrapper">
-            <img src="velocoin-dash.png" alt="Velocoin Dashboard Screenshot" loading="lazy" onerror="this.style.backgroundColor='#f1f5f9'; this.style.minHeight='400px';">
-          </div>
+        <div class="shot-box"><img src="velocoin-dash.png" alt="Velocoin App"></div>
+      </div>
+    </section>
+
+    <!-- MARKETPLACE SECTION -->
+    <section class="feature-section container">
+      <div class="grid-2">
+        <div class="shot-box"><img src="screenshot-marketplace.png" alt="Marketplace Screenshot"></div>
+        <div>
+          <h2 style="font-size:2.25rem; margin-bottom:16px;">Velo Marketplace</h2>
+          <p style="color:var(--text-muted); font-size:1.1rem; margin-bottom:28px;">Explore verified merchants, discover trending items, and buy products directly using your VeloCoin wallet.</p>
+          <a href="https://bentleyhilman.github.io/velomarketplace" class="btn-primary">Explore Marketplace</a>
         </div>
       </div>
     </section>
 
-    <!-- Outro Note -->
-    <section class="more-apps-section container reveal delay-2">
-      <span class="more-apps-text">More apps coming soon!</span>
+    <!-- BUSINESS SECTION -->
+    <section class="feature-section container">
+      <div class="grid-2">
+        <div>
+          <h2 style="font-size:2.25rem; margin-bottom:16px;">Business Dashboard</h2>
+          <p style="color:var(--text-muted); font-size:1.1rem; margin-bottom:28px;">Empowering creators and merchants. Manage inventory, process customer payments, and track sales revenue in real time.</p>
+          <a href="https://bentleyhilman.github.io/velobusiness" class="btn-primary">Merchant Portal</a>
+        </div>
+        <div class="shot-box"><img src="screenshot-business.png" alt="Business Dashboard Screenshot"></div>
+      </div>
     </section>
   </main>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      
-      // --- Menu Interaction Logic ---
-      const menuToggle = document.getElementById('menu-toggle');
-      const appMenu = document.getElementById('app-menu');
-      let isMenuOpen = false;
-
-      const closeMenu = () => {
-        isMenuOpen = false;
-        menuToggle.setAttribute('aria-expanded', 'false');
-        menuToggle.classList.remove('active');
-        appMenu.classList.remove('active');
-      };
-
-      const openMenu = () => {
-        isMenuOpen = true;
-        menuToggle.setAttribute('aria-expanded', 'true');
-        menuToggle.classList.add('active');
-        appMenu.classList.add('active');
-      };
-
-      menuToggle.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent immediate document click trigger
-        isMenuOpen ? closeMenu() : openMenu();
-      });
-
-      // Close menu when clicking outside
-      document.addEventListener('click', (e) => {
-        if (isMenuOpen && !appMenu.contains(e.target) && !menuToggle.contains(e.target)) {
-          closeMenu();
-        }
-      });
-
-      // Close menu on ESC key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && isMenuOpen) {
-          closeMenu();
-          menuToggle.focus();
-        }
-      });
-
-      // --- Scroll Reveal Animations ---
-      // Checks for reduced motion preference before initializing observer
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      
-      if (!prefersReducedMotion && 'IntersectionObserver' in window) {
-        const revealElements = document.querySelectorAll('.reveal');
-        
-        const revealOptions = {
-          root: null,
-          rootMargin: '0px 0px -100px 0px',
-          threshold: 0.15
-        };
-
-        const revealObserver = new IntersectionObserver((entries, observer) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('active');
-              observer.unobserve(entry.target); // Only animate once
-            }
-          });
-        }, revealOptions);
-
-        revealElements.forEach(el => revealObserver.observe(el));
-      } else {
-        // Fallback for reduced motion or older browsers: show all immediately
-        document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
-      }
-      
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('app-menu');
+    toggle.addEventListener('click', () => menu.classList.toggle('active'));
+    document.addEventListener('click', (e) => {
+      if (!toggle.contains(e.target) && !menu.contains(e.target)) menu.classList.remove('active');
     });
   </script>
 </body>
